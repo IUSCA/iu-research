@@ -1,0 +1,54 @@
+name: Skill feedback
+description: A skill was wrong, out of date, or missing something you needed.
+title: "<skill-name>: <what was wrong or missing>"
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. This issue is public. Leave out data, file contents, participant or sample identifiers, keys, usernames, and project names. Use placeholders such as `<user>` and `<project>`.
+
+        This repository owns the family's shared parts: the `reporting-a-skill-problem` skill, `tools/check-skills.py`, the CI workflows, the plugin marketplace, and the family conventions. A problem with a skill in another repository is best filed there; the links on the previous page go to each one. If you file it here, a maintainer transfers it.
+  - type: dropdown
+    id: repository
+    attributes:
+      label: Repository
+      description: The repository that owns the skill or part. The `reporting-a-skill-problem` skill can work this out.
+      options:
+        - iu-research
+        - research-technologies
+        - research-data
+        - research-funding
+        - research-cores
+        - Not sure
+    validations:
+      required: true
+  - type: input
+    id: skill
+    attributes:
+      label: Skill or part
+      description: The skill's name, such as `reporting-a-skill-problem`, or the shared part, such as `tools/check-skills.py`.
+    validations:
+      required: true
+  - type: textarea
+    id: said
+    attributes:
+      label: What the skill said or left out
+    validations:
+      required: true
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened
+      description: Include the exact error text, or the words on the page.
+    validations:
+      required: true
+  - type: textarea
+    id: fix
+    attributes:
+      label: What fixed it, and how you checked
+      description: The command and host, or the page URL, with the date. Name a KB article, policy, or notice number if one backs the fix.
+  - type: input
+    id: pr
+    attributes:
+      label: Pull request
+      description: Optional. Link a pull request with the fix.

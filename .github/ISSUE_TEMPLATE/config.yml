@@ -1,0 +1,14 @@
+blank_issues_enabled: true
+contact_links:
+  - name: A skill in research-technologies
+    url: https://github.com/IUSCA/research-technologies/issues/new/choose
+    about: Clusters, storage, data transfer, allocations, and IU's LLM service.
+  - name: A skill in research-data
+    url: https://github.com/IUSCA/research-data/issues/new/choose
+    about: Finding, classifying, managing, and sharing research data.
+  - name: A skill in research-funding
+    url: https://github.com/IUSCA/research-funding/issues/new/choose
+    about: Planning and preparing grant proposals.
+  - name: A skill in research-cores
+    url: https://github.com/IUSCA/research-cores/issues/new/choose
+    about: Core facilities, their instruments, and the data they deliver.
