@@ -1,0 +1,34 @@
+# Settings for tools/check-skills.py in iu-research.
+# The checker is identical in every repository of this family, and this
+# repository holds the canonical copy; only this file differs. See the
+# checker's docstring for what each setting drives.
+
+# Markers this repository defines in README.md. Its one skill describes a
+# process, so there is no Required or Recommended.
+markers = ["Observed", "External", "Practice", "Open item"]
+
+# Ids that must also appear in a skill's Sources list when cited in its text.
+cited_ids = ['KB\d{7}']
+
+# A skill whose oldest Verified date is older than this prints STALE.
+stale_after_days = 120
+
+# No addresses appear here. Feedback goes through GitHub issues.
+allowed_emails = []
+
+# internal_hosts keeps the family default from the checker.
+
+[links]
+user_agent = "iu-research-skills"
+skip_403_hosts = []
+skip_urls = []
+
+[freshness]
+# Run on the 1st of each month by .github/workflows/freshness.yml.
+checks = ["links"]
+
+# The owner table in reporting-a-skill-problem must match every family README.
+[[freshness.commands]]
+name = "Skill owners"
+run = "python3 .agents/skills/reporting-a-skill-problem/scripts/skill_owner.py check"
+step = "Keep this file current in reporting-a-skill-problem"
