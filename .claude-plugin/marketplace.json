@@ -1,0 +1,65 @@
+{
+  "name": "iusca-iu-research",
+  "owner": {
+    "name": "Indiana University Research Technologies",
+    "url": "https://github.com/IUSCA"
+  },
+  "metadata": {
+    "description": "Every plugin in the IU research skills family: research computing, research data, research funding, research cores, and the shared parent."
+  },
+  "plugins": [
+    {
+      "name": "iu-research",
+      "source": "./",
+      "description": "The shared parent of the IU research skills family: report a problem with any family skill to the repository that owns it.",
+      "version": "0.1.0",
+      "category": "research",
+      "homepage": "https://github.com/IUSCA/iu-research",
+      "license": "ECL-2.0"
+    },
+    {
+      "name": "research-technologies",
+      "source": {
+        "source": "github",
+        "repo": "IUSCA/research-technologies"
+      },
+      "description": "Skills for IU research computing: access checks, system selection, allocations, Slurm jobs, data storage and transfer, Jetstream2, and getting help.",
+      "category": "research",
+      "homepage": "https://github.com/IUSCA/research-technologies",
+      "license": "ECL-2.0"
+    },
+    {
+      "name": "research-data",
+      "source": {
+        "source": "github",
+        "repo": "IUSCA/research-data"
+      },
+      "description": "Skills for research data at IU: find data IU already has, classify it, plan management and sharing, and stay within IU policy and sponsor rules.",
+      "category": "research",
+      "homepage": "https://github.com/IUSCA/research-data",
+      "license": "ECL-2.0"
+    },
+    {
+      "name": "research-funding",
+      "source": {
+        "source": "github",
+        "repo": "IUSCA/research-funding"
+      },
+      "description": "Skills for planning and preparing grant proposals at IU: find opportunities, write Specific Aims and the Research Strategy, budget, route, and resubmit.",
+      "category": "research",
+      "homepage": "https://github.com/IUSCA/research-funding",
+      "license": "ECL-2.0"
+    },
+    {
+      "name": "research-cores",
+      "source": {
+        "source": "github",
+        "repo": "IUSCA/research-cores"
+      },
+      "description": "Skills for IU research core facilities: match research to a core, budget and acknowledge core work, and handle instrument data.",
+      "category": "research",
+      "homepage": "https://github.com/IUSCA/research-cores",
+      "license": "ECL-2.0"
+    }
+  ]
+}

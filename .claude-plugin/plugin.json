@@ -1,0 +1,18 @@
+{
+  "name": "iu-research",
+  "description": "The shared parent of the IU research skills family: a skill that reports a problem with any family skill to the repository that owns it.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Indiana University Research Technologies",
+    "url": "https://github.com/IUSCA"
+  },
+  "homepage": "https://github.com/IUSCA/iu-research",
+  "repository": "https://github.com/IUSCA/iu-research",
+  "license": "ECL-2.0",
+  "keywords": [
+    "indiana-university",
+    "iu-research",
+    "agent-skills"
+  ],
+  "skills": "./.agents/skills"
+}
