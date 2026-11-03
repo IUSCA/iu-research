@@ -186,7 +186,7 @@ These were found in the November 2026 review and remain after checker 1.2.0. A g
 | Gap | Workaround |
 | --- | --- |
 | Articles recorded before checker 1.2.0 have no paragraph hashes, so their `STALE` lines quote nothing | Read the whole article; recording it adds the hashes |
-| `iukb.py` can print malformed links, such as `https://servicenow.iu.eduKB0023488` | Read the KB number by eye |
+| `iukb.py` can print malformed links, with the host run into the KB number, such as `servicenow.iu.eduKB0023488` | Read the KB number by eye |
 
 ## Keeping this runbook current
 
