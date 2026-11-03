@@ -38,6 +38,8 @@ python3 scripts/skill_owner.py <path to SKILL.md>
 
 A clone whose remote is not `IUSCA` is a fork. Report to the IUSCA repository unless the fork's owner asks for reports there.
 
+research-technologies keeps a short copy of this skill, for people who install only that repository. Change this skill first, then that copy.
+
 A problem with the family's shared parts goes to iu-research. That means `tools/check-skills.py`, the CI workflows, the plugin marketplace, and the family conventions.
 
 If no clue and no table row matches, the skill is not from this family. Tell the person, and do not file anything.

@@ -141,6 +141,7 @@ The approver:
 When every repository is ticked, the coordinator:
 
 - Lists anything left for a person on the tracking issue, with a date and an owner, such as the cluster check.
+- Records any step skipped this month, such as the cluster check, on the tracking issue with who decided and why. A skipped step does not hold the month open. The next month's run of that step covers both months.
 - Opens issues for tooling gaps found this month (see "Known gaps").
 - Closes the tracking issue.
 
@@ -186,7 +187,7 @@ These were found in the November 2026 review and remain after checker 1.2.0. A g
 | Gap | Workaround |
 | --- | --- |
 | Articles recorded before checker 1.2.0 have no paragraph hashes, so their `STALE` lines quote nothing | Read the whole article; recording it adds the hashes |
-| `iukb.py` can print malformed links, with the host run into the KB number, such as `servicenow.iu.eduKB0023488` | Read the KB number by eye |
+| `iukb.py` can print malformed links, with the host run into the KB number, such as `servicenow.iu.eduKB0023488` ([research-technologies#15](https://github.com/IUSCA/research-technologies/issues/15)) | Read the KB number by eye |
 
 ## Keeping this runbook current
 
