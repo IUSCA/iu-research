@@ -101,13 +101,13 @@ A maintainer reviews it before anything merges.
 
 - When a family repository adds, renames, or retires a skill, update [references/skill-owners.md](references/skill-owners.md). `python3 scripts/skill_owner.py check` lists the differences. The monthly freshness check in iu-research runs it.
 - When a repository joins the family, add it to `REPOS` in `scripts/skill_owner.py`, to the table, and to the list in the description.
-- Update this file when the issue form in `.github/ISSUE_TEMPLATE/` or the review process in `docs/family-conventions.md` changes.
+- Update this file when the issue form in `.github/ISSUE_TEMPLATE/` or the review process in `docs/research-skills-conventions.md` changes.
 
 ## Sources
 
 Checked 2026-11-02.
 
 - The README, `CONTRIBUTING.md`, and `MAINTAINING.md` of each family repository, `https://github.com/IUSCA/<repository>`.
-- iu-research's `.github/ISSUE_TEMPLATE/skill-feedback.yml` and `docs/family-conventions.md`.
+- iu-research's `.github/ISSUE_TEMPLATE/skill-feedback.yml` and `docs/research-skills-conventions.md`.
 - External: [GitHub CLI manual](https://cli.github.com/manual/), for `gh issue list`, `gh issue create`, and `gh repo fork`.
 - External: [Claude Code plugin marketplaces](https://code.claude.com/docs/en/plugin-marketplaces), for plugin names as skill namespaces.

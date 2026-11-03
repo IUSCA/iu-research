@@ -83,11 +83,11 @@ The skill here describes the family's own process. Every claim carries one of th
 | **Practice** | A lesson from experience that no source states | How to check it, where possible |
 | **Open item** | No source answers it, or sources conflict | The sources that disagree |
 
-Each family repository defines its own markers in its README. The full set, and what each must carry, is in [docs/family-conventions.md](docs/family-conventions.md).
+Each family repository defines its own markers in its README. The full set, and what each must carry, is in [docs/research-skills-conventions.md](docs/research-skills-conventions.md).
 
 ## Maintaining the family
 
-- [docs/family-conventions.md](docs/family-conventions.md) is the guide for any maintainer. It covers scoping, trust markers, sources, freshness, house style, the shared checker, and adding a repository.
+- [docs/research-skills-conventions.md](docs/research-skills-conventions.md) is the guide for any maintainer. It covers scoping, trust markers, sources, freshness, house style, the shared checker, and adding a repository.
 - `tools/check-skills.py` is the canonical checker. Every family repository carries an identical copy. Only each repository's `tools/check-skills.toml` differs.
 - `tools/sync-checker.sh` reports any family copy of the checker or workflows that differs from this repository's, and `--install` copies them in.
 - `.github/workflows/check-skills.yml` and `freshness.yml` are the canonical workflows, identical in every repository.
