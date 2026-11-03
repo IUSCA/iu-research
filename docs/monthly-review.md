@@ -54,9 +54,9 @@ tools/family-status.sh
 For each repository it shows the last `freshness.yml` run and its result, any open `freshness` issue, and every open pull request. Then:
 
 - **A run failed, or did not run.** Open the run in Actions and fix the cause first. `gh run view --log` can print nothing; `gh api repos/IUSCA/<repo>/actions/jobs/<job-id>/logs` works.
-- **No open issue.** The run found nothing to report. Still read the run's log for `INFO` lines (see step 3). They never open an issue.
+- **No open issue.** The run found nothing to report, `INFO` lines included. If an issue was open, the run commented on it and closed it.
 - **An open issue.** The workflow adds a comment on each run with work in it. Work from the latest comment. It repeats every earlier line that has not cleared, so earlier comments can be ignored.
-- **A run that finds nothing posts nothing.** It never closes the issue either. An old issue can look current when every line has cleared. Re-running the check (step 3) is the only way to know.
+- **A run on `main` that finds nothing closes the issue,** with a comment. Reopen it if a step only a person can do is still open. A run on another branch never closes it.
 
 Open a tracking issue on iu-research titled `Monthly review YYYY-MM`, with the "Monthly review" form. It lists each repository with its issue, its reviewer, and its pull request. It is the month's record, and the place to note anything left for a person.
 
@@ -64,7 +64,7 @@ Open a tracking issue on iu-research titled `Monthly review YYYY-MM`, with the "
 
 **Shared articles.** Several KB articles are cited in more than one repository. For example, KB0023515 is cited in research-technologies and research-data, and KB0025237 in research-technologies and research-cores. When the same article is STALE in two repositories, one reviewer reads it once. They post a short note on the tracking issue: what changed, and whether it is substantive. The other reviewer still checks the claims in their own repository, but starts from that note.
 
-**What changed in an article.** The snapshot holds only a hash of each article's text, not the text. To learn what changed before reading the whole article:
+**What changed in an article.** The snapshot holds a hash of each article's text and a short hash per paragraph, never the text. A `STALE` line for a changed article quotes up to six paragraphs that are new or reworded since the snapshot, and counts the ones that are gone. Read the whole article anyway; a quote shows where to look, not everything that changed. An article recorded before checker 1.2.0 has no paragraph hashes, so its line says to read the whole article. Also:
 
 - Compare the hash in each repository's `tools/kb-snapshot.json`. If another repository already recorded the new hash, its commit message usually says what changed.
 - Look at the article's version and updated date. A new updated date with an unchanged hash is an `INFO` line: the KB touched the article but not its text.
@@ -84,10 +84,10 @@ If an open pull request already re-read an article, say so in the review, and do
 
 Name the branch `freshness-YYYY-MM`. Fetch first, so the base is current.
 
-1. Re-run the check: `tools/check-skills.py --freshness | tee freshness.txt`. Lines may have cleared since the issue was written.
+1. Re-run the check: `tools/check-skills.py --freshness | tee freshness.txt`. Lines may have cleared since the issue was written. To re-check only some skills or articles, name them: `tools/check-skills.py --kb classifying-research-data KB0022442`.
 2. Work every line by kind. That includes `INFO`. An unrecorded `INFO` line comes back every month.
-   - **STALE, KB article changed.** Read the whole article with `iukb.py read`. Find every citing claim with `grep -rn KB0123456 .agents/skills docs`. Citations also live in `references/`, in `scripts/`, and in quotes in `docs/open-items.md`. Check the claims in every citing skill, not only the first one. Fix what changed. Then re-run `--kb` and confirm the hash has not moved since you read it. Then record it with `tools/check-skills.py --kb-snapshot KB0123456`.
-   - **INFO, text unchanged.** Record it with `--kb-snapshot KB0123456`. No skill changes.
+   - **STALE, KB article changed.** Read the whole article with `iukb.py read`. Find every citing claim with `grep -rn KB0123456 .agents/skills docs`. Citations also live in `references/`, in `scripts/`, and in quotes in `docs/open-items.md`. Check the claims in every citing skill, not only the first one. Fix what changed. Then re-run `--kb KB0123456` and confirm the hash has not moved since you read it. Then record it with `tools/check-skills.py --kb-snapshot KB0123456`. The `--kb` report ends with that command for every `INFO` and `STALE` article.
+   - **INFO, text unchanged.** Record it with `--kb-snapshot KB0123456`. No skill changes. `--kb-snapshot` prints a `RECORDED` line for each article it wrote.
    - **STALE, not found by KB search.** The article was retired, renumbered, or made login-only. Search for a replacement. If there is none, name the article without a link, with the date it went missing.
    - **STALE, Verified date too old.** Re-read every source the skill cites, then update its Verified line.
    - **BROKEN.** Run `--links` again. A single failure is often transient. If it passes, record it in the pull request as "transient", with no change.
@@ -181,18 +181,12 @@ Some triggers come from outside, and no script notices them. Each repository's `
 
 ## Known gaps
 
-These were found in the November 2026 review. Each needs a change to the shared checker or workflows, made in iu-research and synced to the family. Until then, follow the workaround.
+These were found in the November 2026 review and remain after checker 1.2.0. A gap in the shared checker or workflows is fixed in iu-research and synced to the family. Until then, follow the workaround.
 
 | Gap | Workaround |
 | --- | --- |
-| `freshness.yml` does not report `INFO` lines, so they never reach the issue | Read the run's log, or re-run the check |
-| A clean run does not close or comment on the open issue | Re-run the check before working an old issue |
-| The KB snapshot stores a hash, not text, so nothing shows what changed | Compare hashes across repositories; read the whole article |
-| `--kb` cannot be limited to one article or skill | Run it whole |
-| `--kb-snapshot KB0123456` reports "Wrote N KB articles", though only the named one changed | Check the diff of `tools/kb-snapshot.json` |
-| The link check probes loopback and private addresses, such as `127.0.0.1` | Add each example address to `skip_urls` |
-| `iukb.py` can print malformed links, such as `https://servicenow.iu.eduKB0023488` | Read the KB number by eye |
-| The workflows use actions that run on Node 20, which GitHub has deprecated | None needed yet; update `actions/checkout` and `actions/setup-python` |
+| Articles recorded before checker 1.2.0 have no paragraph hashes, so their `STALE` lines quote nothing | Read the whole article; recording it adds the hashes |
+| `iukb.py` can print malformed links, with the host run into the KB number, such as `servicenow.iu.eduKB0023488` | Read the KB number by eye |
 
 ## Keeping this runbook current
 
