@@ -36,11 +36,13 @@ You need:
 
 Save checker output with `| tee file`, not a bare `> file`. A bare redirect has produced a file of NUL bytes at least once.
 
-`gh issue view` fails in this organization with a "Projects (classic)" error. Use the REST API instead:
+`gh issue view` and `gh pr edit` fail in this organization with a "Projects (classic)" error. Use the REST API instead:
 
 ```bash
 gh api repos/IUSCA/<repo>/issues/<n> -q .body
 gh api repos/IUSCA/<repo>/issues/<n>/comments -q '.[].body'
+gh api -X PATCH repos/IUSCA/<repo>/pulls/<n> -F body=@body.md   # edit a pull request's description
+gh api repos/IUSCA/<repo>/issues/<n>/comments -f body='...'     # comment
 ```
 
 ## 1. See where things stand
@@ -58,7 +60,7 @@ For each repository it shows the last `freshness.yml` run and its result, any op
 - **An open issue.** The workflow adds a comment on each run with work in it. Work from the latest comment. It repeats every earlier line that has not cleared, so earlier comments can be ignored.
 - **A run on `main` that finds nothing closes the issue,** with a comment. Reopen it if a step only a person can do is still open. A run on another branch never closes it.
 
-Open a tracking issue on iu-research titled `Monthly review YYYY-MM`, with the "Monthly review" form. It lists each repository with its issue, its reviewer, and its pull request. It is the month's record, and the place to note anything left for a person.
+Open a tracking issue on iu-research titled `Monthly review YYYY-MM`, with the "Monthly review" form, before any reviewer starts. In November 2026 it was opened after the fact, so no one noted shared KB articles, and two reviewers could not build on each other's reading. It lists each repository with its issue, its reviewer, and its pull request. It is the month's record, and the place to note anything left for a person.
 
 ## 2. Plan around shared KB articles and open pull requests
 
@@ -135,6 +137,18 @@ The approver:
 - For an "unchanged" line, spot-checks at least one citing claim against the article.
 - Confirms CI passed, and that the freshness issue will close (the pull request targets `main`, or will after its base merges).
 - Merges, then ticks the repository on the tracking issue.
+
+Merge stacked pull requests from the bottom up. Before merging each one above the first, point it at `main`. Merging it into its old base branch would leave its changes off `main`, and its freshness issue open.
+
+```bash
+gh api -X PATCH repos/IUSCA/<repo>/pulls/<n> -f base=main
+gh api repos/IUSCA/<repo>/pulls/<n> -q '.mergeable'   # wait until true; null means GitHub is still checking
+gh api -X PUT repos/IUSCA/<repo>/pulls/<n>/merge -f merge_method=merge
+```
+
+The merge call once failed with "unexpected end of JSON input" and worked when run again. Check the pull request's state before retrying, so nothing merges twice.
+
+Merge the month's checker sync pull requests, if any, after the review pull requests, or before the review branches are made. A checker change in the middle of the month should not touch `tools/kb-snapshot.json`, which every review branch also changes.
 
 ## 5. Close the month
 
