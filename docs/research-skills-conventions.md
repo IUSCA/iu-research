@@ -20,6 +20,8 @@ Read two sibling repositories before writing anything. They are the working exam
 - Adding a repository to the family
 - Lessons
 
+The monthly review has its own runbook, [monthly-review.md](monthly-review.md).
+
 ## The family
 
 Each repository is a set of [Agent Skills](https://agentskills.io/specification) about one part of research at IU. Every skill says where each claim came from, so an agent never trusts its own memory of IU.
@@ -147,7 +149,7 @@ A snapshot script is standard-library Python with `check` (exits 1 on any change
 
 Two workflows run in every repository. `check-skills.yml` runs the offline checker on every pull request and push to `main`. `freshness.yml` runs `tools/check-skills.py --freshness` on the 1st of each month. When it finds `STALE`, `BROKEN`, `CHANGED`, or `ERROR` lines, it opens an issue labeled `freshness`, or comments on the open one.
 
-Updates stay human-reviewed. A person or their agent works each freshness issue by hand, following "Working a freshness issue" in that repository's `MAINTAINING.md`. Nothing edits a skill on its own, because every fixed claim needs someone to read its source. In iu-research, a freshness issue is usually a moved link or a new skill missing from the owner table; fix it in a pull request.
+Updates stay human-reviewed. A person or their agent works each freshness issue by hand. [monthly-review.md](monthly-review.md) is the family runbook for it: roles, calendar, setup, shared KB articles, the procedure, review, and handing a repository to an agent. Each repository's `MAINTAINING.md` adds only its own monthly items. Nothing edits a skill on its own, because every fixed claim needs someone to read its source. In iu-research, a freshness issue is usually a moved link or a new skill missing from the owner table; fix it in a pull request.
 
 ### The KB snapshot
 

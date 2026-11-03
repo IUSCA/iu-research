@@ -87,6 +87,7 @@ Each family repository defines its own markers in its README. The full set, and 
 
 ## Maintaining the family
 
+- [docs/monthly-review.md](docs/monthly-review.md) is the runbook for the monthly review of every family repository. `tools/family-status.sh` shows where each repository stands.
 - [docs/research-skills-conventions.md](docs/research-skills-conventions.md) is the guide for any maintainer. It covers scoping, trust markers, sources, freshness, house style, the shared checker, and adding a repository.
 - `tools/check-skills.py` is the canonical checker. Every family repository carries an identical copy. Only each repository's `tools/check-skills.toml` differs.
 - `tools/sync-checker.sh` reports any family copy of the checker or workflows that differs from this repository's, and `--install` copies them in.

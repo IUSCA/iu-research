@@ -1,0 +1,40 @@
+name: Monthly review
+description: Track one month's freshness review across the family. Opened by the coordinator; see docs/monthly-review.md.
+title: "Monthly review YYYY-MM"
+labels: ["monthly-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Follow [docs/monthly-review.md](https://github.com/IUSCA/iu-research/blob/main/docs/monthly-review.md). Paste the output of `tools/family-status.sh` below, then fill in a reviewer per repository.
+  - type: textarea
+    id: status
+    attributes:
+      label: Status at the start
+      description: Output of tools/family-status.sh
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: repos
+    attributes:
+      label: Repositories
+      description: Tick each when its review pull request is merged, or its issue closed with no change.
+      value: |
+        - [ ] research-technologies: issue #, reviewer @, PR #
+        - [ ] research-data: issue #, reviewer @, PR #
+        - [ ] research-funding: issue #, reviewer @, PR #
+        - [ ] research-cores: issue #, reviewer @, PR #
+        - [ ] iu-research: issue #, reviewer @, PR #
+    validations:
+      required: true
+  - type: textarea
+    id: shared
+    attributes:
+      label: Shared KB articles
+      description: Articles STALE in more than one repository, who read each, and whether the change was substantive.
+  - type: textarea
+    id: people
+    attributes:
+      label: Left for a person
+      description: Steps no agent can do this month, each with an owner and a date (for example, the cluster check after HPC maintenance).
