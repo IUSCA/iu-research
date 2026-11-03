@@ -147,13 +147,13 @@ Every repository finds what changed in its own way, from this set:
 
 A snapshot script is standard-library Python with `check` (exits 1 on any change), `show <id>`, and `snapshot` (writes a dated file into `references/`). It prints names only, never people's contact details.
 
-Two workflows run in every repository. `check-skills.yml` runs the offline checker on every pull request and push to `main`. `freshness.yml` runs `tools/check-skills.py --freshness` on the 1st of each month. When it finds `STALE`, `BROKEN`, `CHANGED`, or `ERROR` lines, it opens an issue labeled `freshness`, or comments on the open one.
+Two workflows run in every repository. `check-skills.yml` runs the offline checker on every pull request and push to `main`. `freshness.yml` runs `tools/check-skills.py --freshness` on the 1st of each month. When it finds `STALE`, `INFO`, `BROKEN`, `CHANGED`, or `ERROR` lines, it opens an issue labeled `freshness`, or comments on the open one. When a run on `main` finds none, it comments on the open issue and closes it.
 
 Updates stay human-reviewed. A person or their agent works each freshness issue by hand. [monthly-review.md](monthly-review.md) is the family runbook for it: roles, calendar, setup, shared KB articles, the procedure, review, and handing a repository to an agent. Each repository's `MAINTAINING.md` adds only its own monthly items. Nothing edits a skill on its own, because every fixed claim needs someone to read its source. In iu-research, a freshness issue is usually a moved link or a new skill missing from the owner table; fix it in a pull request.
 
 ### The KB snapshot
 
-`tools/kb-snapshot.json` records, for each linked KB article, its version, published and updated dates, a sha256 of its text, and the date it was taken. Refresh one article with `--kb-snapshot KB0123456` right after re-reading it, or all with `--kb-snapshot`. Commit it with the skill change it supports.
+`tools/kb-snapshot.json` records, for each linked KB article, its version, published and updated dates, a sha256 of its text, a short hash of each paragraph, and the date it was taken. It never holds the article's text. When the text changes, `--kb` quotes the paragraphs that are new since the snapshot. Refresh one article with `--kb-snapshot KB0123456` right after re-reading it, the articles one skill links with `--kb-snapshot <skill>`, or all with `--kb-snapshot`. Commit it with the skill change it supports.
 
 The KB edits articles in place. ServiceNow's `published` date does not always move when an article changes, but `sys_updated_on` and the version do. The checker reads both.
 
@@ -206,6 +206,8 @@ tools/check-skills.py --kb-snapshot [KB...]  # record linked KB articles' text
 tools/check-skills.py --version    # version and sha256 of this file
 ```
 
+Name skills or KB numbers after a mode to limit it to them, as in `tools/check-skills.py --kb classifying-research-data KB0022442`. The repository-wide checks always run.
+
 It exits 1 on any ERROR, BROKEN, or CHANGED line. STALE, INFO, and WARN never fail.
 
 ### Checks
@@ -231,7 +233,7 @@ It exits 1 on any ERROR, BROKEN, or CHANGED line. STALE, INFO, and WARN never fa
 | Every skill has a README row and a trigger prompt | ERROR | no |
 | Linked KB article retired, login-only, or changed since last read | STALE (INFO when only metadata changed) | `[freshness].checks` |
 | Claude plugin manifests parse, agree on name and version, and point at a skills directory that exists | ERROR or WARN | no |
-| Cited URL broken | BROKEN | `[links]` |
+| Cited URL broken; loopback and private addresses are skipped | BROKEN | `[links]` |
 | Snapshot command found a change | CHANGED | `[[freshness.commands]]` |
 
 Marker and content checks cover `SKILL.md` and `references/*.md`. Content checks also cover scripts (hostnames only), the README, `CONTRIBUTING.md`, `MAINTAINING.md`, `tests/trigger-prompts.md`, and `docs/*.md`. The "Keep this file current" section is not marker-checked, because it talks about markers.
