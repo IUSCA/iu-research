@@ -36,11 +36,13 @@ You need:
 
 Save checker output with `| tee file`, not a bare `> file`. A bare redirect has produced a file of NUL bytes at least once.
 
-`gh issue view` fails in this organization with a "Projects (classic)" error. Use the REST API instead:
+`gh issue view` and `gh pr edit` fail in this organization with a "Projects (classic)" error. Use the REST API instead:
 
 ```bash
 gh api repos/IUSCA/<repo>/issues/<n> -q .body
 gh api repos/IUSCA/<repo>/issues/<n>/comments -q '.[].body'
+gh api -X PATCH repos/IUSCA/<repo>/pulls/<n> -F body=@body.md   # edit a pull request's description
+gh api repos/IUSCA/<repo>/issues/<n>/comments -f body='...'     # comment
 ```
 
 ## 1. See where things stand
@@ -58,7 +60,7 @@ For each repository it shows the last `freshness.yml` run and its result, any op
 - **An open issue.** The workflow adds a comment on each run with work in it. Work from the latest comment. It repeats every earlier line that has not cleared, so earlier comments can be ignored.
 - **A run on `main` that finds nothing closes the issue,** with a comment. Reopen it if a step only a person can do is still open. A run on another branch never closes it.
 
-Open a tracking issue on iu-research titled `Monthly review YYYY-MM`, with the "Monthly review" form. It lists each repository with its issue, its reviewer, and its pull request. It is the month's record, and the place to note anything left for a person.
+Open a tracking issue on iu-research titled `Monthly review YYYY-MM`, with the "Monthly review" form, before any reviewer starts. In November 2026 it was opened after the fact, so no one noted shared KB articles, and two reviewers could not build on each other's reading. It lists each repository with its issue, its reviewer, and its pull request. It is the month's record, and the place to note anything left for a person.
 
 ## 2. Plan around shared KB articles and open pull requests
 
@@ -136,11 +138,24 @@ The approver:
 - Confirms CI passed, and that the freshness issue will close (the pull request targets `main`, or will after its base merges).
 - Merges, then ticks the repository on the tracking issue.
 
+Merge stacked pull requests from the bottom up. Before merging each one above the first, point it at `main`. Merging it into its old base branch would leave its changes off `main`, and its freshness issue open.
+
+```bash
+gh api -X PATCH repos/IUSCA/<repo>/pulls/<n> -f base=main
+gh api repos/IUSCA/<repo>/pulls/<n> -q '.mergeable'   # wait until true; null means GitHub is still checking
+gh api -X PUT repos/IUSCA/<repo>/pulls/<n>/merge -f merge_method=merge
+```
+
+The merge call once failed with "unexpected end of JSON input" and worked when run again. Check the pull request's state before retrying, so nothing merges twice.
+
+Merge the month's checker sync pull requests, if any, after the review pull requests, or before the review branches are made. A checker change in the middle of the month should not touch `tools/kb-snapshot.json`, which every review branch also changes.
+
 ## 5. Close the month
 
 When every repository is ticked, the coordinator:
 
 - Lists anything left for a person on the tracking issue, with a date and an owner, such as the cluster check.
+- Records any step skipped this month, such as the cluster check, on the tracking issue with who decided and why. A skipped step does not hold the month open. The next month's run of that step covers both months.
 - Opens issues for tooling gaps found this month (see "Known gaps").
 - Closes the tracking issue.
 
@@ -186,7 +201,7 @@ These were found in the November 2026 review and remain after checker 1.2.0. A g
 | Gap | Workaround |
 | --- | --- |
 | Articles recorded before checker 1.2.0 have no paragraph hashes, so their `STALE` lines quote nothing | Read the whole article; recording it adds the hashes |
-| `iukb.py` can print malformed links, with the host run into the KB number, such as `servicenow.iu.eduKB0023488` | Read the KB number by eye |
+| `iukb.py` can print malformed links, with the host run into the KB number, such as `servicenow.iu.eduKB0023488` ([research-technologies#15](https://github.com/IUSCA/research-technologies/issues/15)) | Read the KB number by eye |
 
 ## Keeping this runbook current
 

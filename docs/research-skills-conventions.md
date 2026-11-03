@@ -259,9 +259,10 @@ An unknown key is an error. A key left out takes the checker's default.
 2. Bump `VERSION`.
 3. A repository that needs a new behavior gets a new config key, with a default that keeps the others passing. Never fork the file.
 4. Run `tools/sync-checker.sh --install`. It copies the checker and both workflows into each family checkout next to this one. It never touches a repository's TOML.
-5. Run `tools/check-skills.py` in each repository. Each must print `OK`.
-6. Open one pull request per repository with the copied files.
-7. `tools/sync-checker.sh` with no flag reports any copy that drifted.
+5. Run `tools/check-skills.py` in each repository. Each must print `OK`. Test any changed network mode against a copy of a real repository, and force the case it handles, such as a changed KB article, by editing a scratch copy of `tools/kb-snapshot.json`.
+6. Run the changed `freshness.yml` once by hand on the iu-research branch: `gh workflow run freshness.yml -R IUSCA/iu-research --ref <branch>`. Its real issue steps run, so it may open an issue. A branch run never closes one.
+7. Open one pull request per repository with the copied files.
+8. `tools/sync-checker.sh` with no flag reports any copy that drifted.
 
 Add a check when a fact-check pass finds a class of mistake. Observed claims without dates, personal emails, internal hostnames, and skills missing from the README all became checks this way.
 
@@ -327,6 +328,11 @@ These came from building and running the family. Each changed a skill, the check
 - **Never put an API key in an agent's environment.** An agent asked to check access can print its environment into its answer. Have the harness read the key from a file per request.
 - **Generate model lists from the live service.** Model names in a pasted config are often withdrawn. Read the service's model list instead.
 - **Model choice changes skill routing.** The same prompt loaded the expected skill with one model and not with others. Test trigger prompts with the models people use.
+- **Example text gets link-checked.** The runbook quoted a malformed link from `iukb.py` as an example, and the first workflow run reported it BROKEN and opened an issue. Write a broken or local example without its `https://`, or inside a placeholder with `<` in it.
+- **Test the workflow where it runs.** The checker passed every local test, but only a manual run on GitHub showed what the issue step would post.
+- **Scripts honor robots.txt.** The research data catalog asks every script for a 10-second crawl delay. Its check script waited 1 second until November 2026. Read robots.txt in the script, and say in `MAINTAINING.md` how long the run takes.
+- **Keep a short copy of a widely cited skill.** When `reporting-a-skill-problem` moved to iu-research, 15 research-technologies skills cited it by name. A short copy kept those references working for people who install only that repository. The full skill names the copy, so changes start there.
+- **Write the month's record from what was recorded.** A tracking issue written afterwards claimed a shared KB article had been read once for two repositories, which no record showed. It was corrected. Say "not tracked" when it was not.
 - **Copies drift fast.** Copies of the checker drifted within a day, as each new repository added checks. The fix was one canonical file, per-repository TOML, a version and hash line, and the sync script.
 
 ## Keeping this guide current
