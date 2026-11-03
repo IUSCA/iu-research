@@ -21,7 +21,7 @@ The README's Maintainers table names who fills each role. A role with no one in 
 | 1st of the month, 13:00 UTC | `freshness.yml` runs in every repository. GitHub often starts scheduled runs hours late. | Automatic |
 | First week | Tracking issue, then one review per repository | Coordinator, reviewers |
 | By the 15th | Every review pull request merged, or its delay noted on the tracking issue | Approvers |
-| Day after HPC maintenance (second Monday) | Cluster check in research-technologies; needs a login with Duo | A person with a Quartz and Big Red 200 account |
+| The day after monthly HPC maintenance, which is the second Sunday (research-technologies MAINTAINING.md) | Cluster check in research-technologies; needs a login with Duo | A person with a Quartz and Big Red 200 account |
 | January, April, July, October | The full quarterly review in each `MAINTAINING.md`, after the monthly one | Coordinator, reviewers |
 | As announced | Event triggers in each `MAINTAINING.md`, such as an NIH notice, a new PAPPG, a new research data policy | Whoever watches the feed (see "Watching for events") |
 
