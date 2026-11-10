@@ -82,6 +82,8 @@ What does not count:
 - Login-only pages. The repositories are public, so a claim must come from a page a guest can read. `iukb.py` and the checker read the KB without logging in, so an article they return is public. Never quote an article you could read only while logged in. A link to a login-only task, such as a One.IU launch link, is fine; its content is not.
 - A person's email, unless recorded as a dated reply from an office, without the name.
 
+Cite a source next to every contact (an email address, a phone number, a form), on the same line: in a table, in the same row. The source is the KB article that lists it, or the official page of the office that owns it, linked. Assistants that use these skills give a contact only with the source the skill names beside it, so a contact without one, or with its source on another line, cannot be given. Cite the page where the contact actually appears, not the office's main page.
+
 Use official office names. Check every one against the office's own page. For example, IU's name is "Office for Research Administration (ORA)," not "Office of Research Administration."
 
 After drafting, run a separate fact-check pass that reads every cited source again. Correct or downgrade each claim it cannot confirm. In the family's first fact-check, a draft written from official sources still had more than 20 wrong or unsupported claims out of about 185. Budget a fact-check pass for every new repository, and before any large commit.
@@ -327,6 +329,8 @@ These came from building and running the family. Each changed a skill, the check
 - **Never put an API key in an agent's environment.** An agent asked to check access can print its environment into its answer. Have the harness read the key from a file per request.
 - **Generate model lists from the live service.** Model names in a pasted config are often withdrawn. Read the service's model list instead.
 - **Model choice changes skill routing.** The same prompt loaded the expected skill with one model and not with others. Test trigger prompts with the models people use.
+- **A contact needs its source beside it.** An assistant built on these skills (2026-11) gives a contact only when the skill names its source on the same line. Skills that gave office addresses with no source beside them left it with contacts it could not give. research-data fixed this with a pass that put a source in every contact row.
+- **Sensitive data is still a topic.** An assistant refused to describe a clinical biobank because it holds health data, when the person wanted to know what exists and how to apply. The fix was in the assistant's rules, but skills help: for a sensitive resource, say what it holds and how to apply, and keep the caution to where the data itself may go.
 - **Copies drift fast.** Copies of the checker drifted within a day, as each new repository added checks. The fix was one canonical file, per-repository TOML, a version and hash line, and the sync script.
 
 ## Keeping this guide current
